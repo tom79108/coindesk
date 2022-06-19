@@ -10,4 +10,11 @@ public class CommonDataUtil {
 		Timestamp now = new Timestamp(new Date().getTime());
 		return dateFormat.format(now);
 	}
+	
+	public static String getTimestamp(String date) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String convertDate = date.substring(1, 11)+ " " + date.substring(12, 20);
+		Timestamp timestamp = Timestamp.valueOf(convertDate);
+		return dateFormat.format(timestamp);
+	}
 }

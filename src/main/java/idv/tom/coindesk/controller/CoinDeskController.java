@@ -1,7 +1,5 @@
 package idv.tom.coindesk.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import idv.tom.coindesk.entity.CoinDeskDataEntity;
-import idv.tom.coindesk.repositories.CoinDataBaseRepository;
 import idv.tom.coindesk.service.CoinDeskService;
 import idv.tom.coindesk.service.impl.DBServiceImpl;
 
@@ -20,48 +17,58 @@ import idv.tom.coindesk.service.impl.DBServiceImpl;
 @Controller
 public class CoinDeskController {
 	
-	private CoinDeskService CoinDeskService;
+	private CoinDeskService coinDeskService;
 	@Autowired
 	private DBServiceImpl dbServiceImpl;
-//	@Autowired
-//    public CoinDeskController(CoinDeskService CoinDeskService) {
-//		this.CoinDeskService = CoinDeskService;
-//    }
 	
     @GetMapping("/")
     public Object hello(Model model){
-//    	System.out.println(dbServiceImpl.findAll());
-//    	model.addAttribute("APIResult", dbServiceImpl.findAll());
+    	model.addAttribute("APIResult", dbServiceImpl.findAll());
         return "index";
     }
 	
 	@GetMapping("/OldAPIData")
 	public Object OldCoinDeskData(Model model) {
-		model.addAttribute("APIResult", CoinDeskService.getCoinDeskData());
+		model.addAttribute("APIResult", coinDeskService.getCoinDeskData());
+		System.out.println(model);
 		return "index";
 	}
 	
+	@GetMapping("/CoinDeskAPI/{coinname}")
+	public String CoinDeskDataSelect(Model model, @PathVariable String coinname) {
+		model.addAttribute("APISearch", coinDeskService.getCoinDeskDataSearch(coinname));
+		return "index";
+	}
+
 	@GetMapping("/CoinDeskAPI")
 	public String CoinDeskDataSelect(Model model) {
-//		model.addAttribute("APISearch", CoinDeskService.getCoinDeskDataSearch());
+		model.addAttribute("APISearch", coinDeskService.getCoinDeskDataSearchAll());
 		return "index";
 	}
 	
-	@PostMapping("/CoinDeskAPI")
-	public String CoinDeskDataInsert(Model model) {
-//		model.addAttribute("APIInsert", CoinDeskService.setCoinDeskDataInsert());
+	@PostMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
+	public String CoinDeskDataInsert(Model model, @PathVariable String coinname,@PathVariable String coincname,@PathVariable String rate) {
+		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
+		coinDeskDataEntity.setCoinName(coinname);
+		coinDeskDataEntity.setCoinCName(coincname);
+		coinDeskDataEntity.setRate(rate);
+		model.addAttribute("APIInsert", coinDeskService.setCoinDeskDataInsert(coinDeskDataEntity));
 		return "index";
 	}
 	
-	@PutMapping("/CoinDeskAPI")
-	public String CoinDeskDataUpdate(Model model) {
-//		model.addAttribute("APIUpdate", CoinDeskService.setCoinDeskDataUpdate());
+	@PutMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
+	public String CoinDeskDataUpdate(Model model, @PathVariable String coinname,@PathVariable String coincname,@PathVariable String rate) {
+		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
+		coinDeskDataEntity.setCoinName(coinname);
+		coinDeskDataEntity.setCoinCName(coincname);
+		coinDeskDataEntity.setRate(rate);
+		model.addAttribute("APIUpdate", coinDeskService.setCoinDeskDataUpdate(coinDeskDataEntity));
 		return "index";
 	}
 	
 	@DeleteMapping("/CoinDeskAPI/{coinname}")
 	public String CoinDeskDataDelete(Model model, @PathVariable String coinname) {
-//		model.addAttribute("APIDelete", CoinDeskService.setCoinDeskDataDelete(coinname));
+		model.addAttribute("APIDelete", coinDeskService.setCoinDeskDataDelete(coinname));
 		return "index";
 	}
 }

@@ -1,34 +1,34 @@
 package idv.tom.vo;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinType {
 	@JsonProperty("USD")
-	private Collection<CoinData> USD;
+	private CoinData USD;
 	@JsonProperty("GBP")
-	private Collection<CoinData> GBP;
+	private CoinData GBP;
 	@JsonProperty("EUR")
-	private Collection<CoinData> EUR;
-	
-	
-	public Collection<CoinData> getUSD() {
+	private CoinData EUR;
+	public CoinData getUSD() {
 		return USD;
 	}
-	public void setUSD(Collection<CoinData> uSD) {
+	public void setUSD(CoinData uSD) {
 		USD = uSD;
 	}
-	public Collection<CoinData> getGBP() {
+	public CoinData getGBP() {
 		return GBP;
 	}
-	public void setGBP(Collection<CoinData> gBP) {
+	public void setGBP(CoinData gBP) {
 		GBP = gBP;
 	}
-	public Collection<CoinData> getEUR() {
+	public CoinData getEUR() {
 		return EUR;
 	}
-	public void setEUR(Collection<CoinData> eUR) {
+	public void setEUR(CoinData eUR) {
 		EUR = eUR;
 	}
+	
+	
 }

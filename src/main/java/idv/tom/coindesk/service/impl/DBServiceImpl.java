@@ -1,5 +1,6 @@
 package idv.tom.coindesk.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import idv.tom.coindesk.service.DBService;
 import idv.tom.coindesk.utils.CommonDataUtil;
 
 @Service
-public class DBServiceImpl implements DBService{
+public class DBServiceImpl implements DBService {
 
 	private CommonDataUtil getConnonDataUtil;
 	
@@ -19,41 +20,66 @@ public class DBServiceImpl implements DBService{
 	private CoinDataBaseRepository coinDatabaseRepository;
 
 	public List<CoinDeskDataEntity> findAll() {
-		System.out.println("empty");
-		List<CoinDeskDataEntity> coinDeskDataEntity = coinDatabaseRepository.findAll();
-		return coinDeskDataEntity;
+		List<CoinDeskDataEntity> result = new ArrayList();
+		try {
+			result = coinDatabaseRepository.findAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	public CoinDeskDataEntity findByCoinName(String coinName) {
-		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
-		coinDeskDataEntity.setCoinName(coinName);
-		System.out.println("empty" + coinName);
-		return coinDatabaseRepository.findByCoinName(coinName);
+		CoinDeskDataEntity result = new CoinDeskDataEntity();
+		try {
+			result = coinDatabaseRepository.findByCoinName(coinName); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public CoinDeskDataEntity insert(CoinDeskDataEntity insertData) {
-		System.out.println(insertData.getCoinName() + "_" + insertData.getCoinCName() + "_" + insertData.getRate());
-		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
-		coinDeskDataEntity.setCoinName(insertData.getCoinName());
-		coinDeskDataEntity.setCoinCName(insertData.getCoinCName());
-		coinDeskDataEntity.setRate(insertData.getRate());
-		coinDeskDataEntity.setLastUpdateDate(getConnonDataUtil.getTimestamp());
-		return coinDatabaseRepository.save(coinDeskDataEntity);
+		System.out.println(insertData.getLastUpdateDate());
+		System.out.println(insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty());
+		insertData.setLastUpdateDate(
+			insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty() ?
+			CommonDataUtil.getTimestamp() : CommonDataUtil.getTimestamp(insertData.getLastUpdateDate()) 
+		);
+		System.out.println(insertData.getLastUpdateDate());
+		CoinDeskDataEntity result = new CoinDeskDataEntity();
+		try {
+			result = coinDatabaseRepository.save(insertData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	public CoinDeskDataEntity update(CoinDeskDataEntity updateData) {
-		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
-		coinDeskDataEntity.setCoinName(updateData.getCoinName());
-		coinDeskDataEntity.setCoinCName(updateData.getCoinCName());
-		coinDeskDataEntity.setRate(updateData.getRate());
-		return coinDatabaseRepository.save(coinDeskDataEntity);
+		updateData.setLastUpdateDate(getConnonDataUtil.getTimestamp());
+		CoinDeskDataEntity result = new CoinDeskDataEntity();
+		try {
+			result = coinDatabaseRepository.save(updateData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
-	public void deleteByKey(String coinname) {
+	public String deleteByKey(String coinname) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
-		coinDeskDataEntity.setCoinName(coinname);
-		if(coinDeskDataEntity != null) {
-			coinDatabaseRepository.delete(coinDeskDataEntity);
+		String result = "Data undefind";
+		try {
+			CoinDeskDataEntity selectData = findByCoinName(coinname);
+			if(selectData != null) {
+				coinDeskDataEntity.setCoinName(selectData.getCoinName());
+				coinDatabaseRepository.delete(coinDeskDataEntity);
+				result = "Delete Finish";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return result;
 	}
 }
