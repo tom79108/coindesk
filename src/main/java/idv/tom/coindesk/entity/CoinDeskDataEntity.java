@@ -3,30 +3,17 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-import lombok.*;
-import lombok.experimental.Accessors;
+import lombok.ToString;
 
 @Entity
-@Accessors(chain = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name="COINDESKDATA")
 @ToString
 public class CoinDeskDataEntity implements Serializable{
-	private static final long serialVersionUID = 1L;
-
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="no")
-	private long no;
-	
-    @Column(name="coinname", nullable=false, columnDefinition = "varchar(10)")
+	@Column(name="coinname", columnDefinition = "varchar(10)")
     String coinName;
 
     @Column(name="coincname", nullable=false, columnDefinition = "varchar(20)")
@@ -35,10 +22,8 @@ public class CoinDeskDataEntity implements Serializable{
     @Column(name="rate", nullable=false, columnDefinition = "varchar(20)")
     String rate;
 
-//    @Column(name="lastupdatedate", columnDefinition = "TIMESTAMP not null default current_timestamp")
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @LastModifiedDate
-//    Date lastUpdateDate;
+    @Column(name="lastupdatedate", columnDefinition = "TIMESTAMP(0) not null default current_timestamp")
+    String lastUpdateDate;
 
 	public String getCoinName() {
 		return coinName;
@@ -64,11 +49,11 @@ public class CoinDeskDataEntity implements Serializable{
 		this.rate = rate;
 	}
 
-//	public Date getLastUpdateDate() {
-//		return lastUpdateDate;
-//	}
-//
-//	public void setLastUpdateDate(Date lastUpdateDate) {
-//		this.lastUpdateDate = lastUpdateDate;
-//	}
+	public String getLastUpdateDate() {
+		return lastUpdateDate;
+	}
+
+	public void setLastUpdateDate(String lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
+	}
 }

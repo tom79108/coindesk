@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -29,8 +30,8 @@ public class CoinDeskController {
 	
     @GetMapping("/")
     public Object hello(Model model){
-    	System.out.println(dbServiceImpl.findAll());
-    	model.addAttribute("APIResult", dbServiceImpl.findAll());
+//    	System.out.println(dbServiceImpl.findAll());
+//    	model.addAttribute("APIResult", dbServiceImpl.findAll());
         return "index";
     }
 	
@@ -42,25 +43,25 @@ public class CoinDeskController {
 	
 	@GetMapping("/CoinDeskAPI")
 	public String CoinDeskDataSelect(Model model) {
-		model.addAttribute("APISearch", CoinDeskService.getCoinDeskDataSearch());
+//		model.addAttribute("APISearch", CoinDeskService.getCoinDeskDataSearch());
 		return "index";
 	}
 	
 	@PostMapping("/CoinDeskAPI")
 	public String CoinDeskDataInsert(Model model) {
-		model.addAttribute("APIInsert", CoinDeskService.setCoinDeskDataInsert());
+//		model.addAttribute("APIInsert", CoinDeskService.setCoinDeskDataInsert());
 		return "index";
 	}
 	
 	@PutMapping("/CoinDeskAPI")
 	public String CoinDeskDataUpdate(Model model) {
-		model.addAttribute("APIUpdate", CoinDeskService.setCoinDeskDataUpdate());
+//		model.addAttribute("APIUpdate", CoinDeskService.setCoinDeskDataUpdate());
 		return "index";
 	}
 	
-	@DeleteMapping("/CoinDeskAPI")
-	public String CoinDeskDataDelete(Model model) {
-		model.addAttribute("APIDelete", CoinDeskService.setCoinDeskDataDelete());
+	@DeleteMapping("/CoinDeskAPI/{coinname}")
+	public String CoinDeskDataDelete(Model model, @PathVariable String coinname) {
+//		model.addAttribute("APIDelete", CoinDeskService.setCoinDeskDataDelete(coinname));
 		return "index";
 	}
 }
