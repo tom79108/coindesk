@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"> 
+	<head>
+		<meta charset="UTF-8">
+		<title>Coin Desk API</title>
+	</head>
+
+	<body>
+		<div style="height: 100%;">
+			<div style="min-height: 20vh; max-height: 60vh; border: 1px #ccc solid; padding: 2px 5px; box-sizing: border-box; box-shadow: 0 0 3px 2px #f1a61a; word-break: break-all; overflow: auto;">
+				<p th:if="${APIResult} != 'null'" th:text="${APIResult}"  style="white-space: pre">Json</p]>
+				<p th:if="${APISearch} != 'null'" th:text="${APISearch}"></p>
+				<p th:if="${APIInsert} != 'null'" th:text="${APIInsert}"></p>
+				<p th:if="${APIUpdate} != 'null'" th:text="${APIUpdate}"></p>
+				<p th:if="${APIDelete} != 'null'" th:text="${APIDelete}"></p>
+			</div>
+			<div style="display: inline-flex; padding: 25px 0;">
+				<form class="header" th:action="@{/OldAPIData}" th:method="get">
+					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">OldAPIData</button>
+			    </form>
+				<form class="header" th:action="@{/CoinDeskAPI}" th:method="get">
+					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">GetAPIData</button>
+			   	</form>
+			   	<form class="header" th:action="@{/CoinDeskAPI}" th:method="post">
+					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">InsertGetOldAPIData</button>
+			   	</form>
+			   	<form class="header" th:action="@{/CoinDeskAPI}" th:method="PUT">
+			   		<input type="hidden" name="_method" value="PUT"></input>
+					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">UpdateAPIData</button>
+			   	</form>
+			   	<form th:action="@{/CoinDeskAPI}" th:method="delete">
+					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">DeleteAPIData</button>
+			   	</form>
+		    </div>
+		</div>
+	</body>
+</html>
