@@ -22,9 +22,14 @@ public class CoinDeskWSController {
 	@Autowired
 	CoinDeskService coinDeskService;
 	
-	@GetMapping({"/OldAPIData*",})
+	@GetMapping({"/OldAPIData", "/OldAPIData/*"})
 	public Object OldCoinDeskData() {
 		return coinDeskService.getCoinDeskData();
+	}
+	
+	@PostMapping({"/OldAPIToNewAPI", "/OldAPIToNewAPI/*"})
+	public List<CoinDeskDataEntity> OldAPIToNewAPI() {
+		return coinDeskService.TodoOldAPIToNewAPI();
 	}
 	
 	@GetMapping("/CoinDeskAPI/{coinname}")
@@ -55,10 +60,11 @@ public class CoinDeskWSController {
 		return coinDeskService.setCoinDeskDataUpdate(coinDeskDataEntity);
 	}
 	
-	@DeleteMapping({"/CoinDeskAPI/{coinname}", "/CoinDeskAPI/Json/{coinname}"})
+	@DeleteMapping("/CoinDeskAPI/{coinname}")
 	public String CoinDeskDataDelete(@PathVariable String coinname) {
 		return coinDeskService.setCoinDeskDataDelete(coinname);
 	}
+	
 	
 	@GetMapping(value="/Json/OldAPIData", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object OldCoinDeskData(@RequestBody CoinDeskDataEntity requestBody) {
@@ -83,12 +89,18 @@ public class CoinDeskWSController {
 		return coinDeskService.setCoinDeskDataInsert(coinDeskDataEntity);
 	}
 	
-	@PutMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	@PutMapping("/CoinDeskAPI/Json")
 	public CoinDeskDataEntity CoinDeskDataUpdate(@RequestBody CoinDeskDataEntity requestBody) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		coinDeskDataEntity.setCoinName(requestBody.getCoinName());
 		coinDeskDataEntity.setCoinCName(requestBody.getCoinCName());
 		coinDeskDataEntity.setRate(requestBody.getRate());
 		return coinDeskService.setCoinDeskDataUpdate(coinDeskDataEntity);
+	}
+	
+	@DeleteMapping("/CoinDeskAPI/Json")
+	public String CoinDeskDataDelete(@RequestBody CoinDeskDataEntity requestBody) {
+		return coinDeskService.setCoinDeskDataDelete(requestBody.getCoinName());
 	}
 }

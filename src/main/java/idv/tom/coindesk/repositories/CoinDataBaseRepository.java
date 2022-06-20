@@ -8,5 +8,5 @@ import idv.tom.coindesk.entity.CoinDeskDataEntity;
 
 @Repository
 public interface CoinDataBaseRepository extends JpaRepository<CoinDeskDataEntity, Long> {
-	public CoinDeskDataEntity findByCoinName(String coinname);
+	public CoinDeskDataEntity findByCoinName(String coinName);
 }

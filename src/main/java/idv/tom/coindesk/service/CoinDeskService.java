@@ -27,7 +27,6 @@ public class CoinDeskService {
 	public Object getCoinDeskData() {
 		final String url = "https://api.coindesk.com/v1/bpi/currentprice.json";
 		ObjectMapper mapper = new ObjectMapper();
-		GetOldAPIRsVO getOldAPIRsVO = new GetOldAPIRsVO();
 		JsonNode jsonNodeData = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
@@ -37,13 +36,25 @@ public class CoinDeskService {
 				)
 			);
 			jsonNodeData = mapper.readTree(restTemplate.getForObject(url, String.class));
+       	} catch (JsonProcessingException e) {
+           e.printStackTrace();
+       	}
+		return jsonNodeData;
+	}
+	
+	
+	public List<CoinDeskDataEntity> TodoOldAPIToNewAPI() {
+		ObjectMapper mapper = new ObjectMapper();
+		GetOldAPIRsVO getOldAPIRsVO = new GetOldAPIRsVO();
+		try {
+			JsonNode jsonNodeData = (JsonNode) getCoinDeskData();
 			String jsonString = CommonDataUtil.JavaObject2JsonString(jsonNodeData);
 			getOldAPIRsVO = mapper.readValue(jsonString, GetOldAPIRsVO.class);
 			JsonNodeDataMappingToDB(jsonNodeData, getOldAPIRsVO.getTime());
        	} catch (JsonProcessingException e) {
            e.printStackTrace();
        	}
-		return jsonNodeData;
+		return getCoinDeskDataSearchAll();
 	}
 	
 	enum CoinCname
@@ -76,8 +87,8 @@ public class CoinDeskService {
 		}
 	}
 	
-	public CoinDeskDataEntity getCoinDeskDataSearch(String coinname) {
-		return dbService.findByCoinName(coinname);
+	public CoinDeskDataEntity getCoinDeskDataSearch(String coinName) {
+		return dbService.findByCoinName(coinName);
 	}
 	
 	public List<CoinDeskDataEntity> getCoinDeskDataSearchAll() {

@@ -64,11 +64,11 @@ public class DBServiceImpl implements DBService {
 		return result;
 	}
 	
-	public String deleteByKey(String coinname) {
+	public String deleteByKey(String coinName) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		String result = "Data undefind";
 		try {
-			CoinDeskDataEntity selectData = findByCoinName(coinname);
+			CoinDeskDataEntity selectData = findByCoinName(coinName);
 			if(selectData != null) {
 				coinDeskDataEntity.setCoinName(selectData.getCoinName());
 				coinDatabaseRepository.delete(coinDeskDataEntity);

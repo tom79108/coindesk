@@ -10,9 +10,11 @@ public class GetOldAPIRsVO {
 
 	private CoinType bpi;
 
+	
 	public GetOldAPIRsVO() {
 		
 	}
+	
 	
     public GetOldAPIRsVO(
 		DataTimeType time, String disclaimer, String chartName,
@@ -25,6 +27,7 @@ public class GetOldAPIRsVO {
         this.bpi = bpi;
     }
 
+    
 	public DataTimeType getTime() {
 		return time;
 	}
