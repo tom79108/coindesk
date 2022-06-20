@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.ToString;
 
 @Entity
@@ -27,6 +25,18 @@ public class CoinDeskDataEntity implements Serializable{
 
     @Column(name="lastupdatedate", columnDefinition = "TIMESTAMP(0) not null default current_timestamp")
     String lastUpdateDate;
+    
+    public CoinDeskDataEntity() {
+		
+	}
+	
+	public CoinDeskDataEntity(String coinName, String coinCName, String rate) {
+		super();
+		this.coinName = coinName;
+		this.coinCName = coinCName;
+		this.rate = rate;
+	}
+	
 
 	public String getCoinName() {
 		return coinName;

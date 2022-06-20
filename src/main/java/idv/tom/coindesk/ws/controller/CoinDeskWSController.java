@@ -41,7 +41,7 @@ public class CoinDeskWSController {
 		return coinDeskService.getCoinDeskDataSearchAll();
 	}
 	
-	@PostMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
+	@PutMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
 	public CoinDeskResultVO CoinDeskDataInsert(@PathVariable String coinname,@PathVariable String coincname,@PathVariable String rate) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		coinDeskDataEntity.setCoinName(coinname);
@@ -50,7 +50,7 @@ public class CoinDeskWSController {
 		return coinDeskService.setCoinDeskDataInsert(coinDeskDataEntity);
 	}
 	
-	@PutMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
+	@PostMapping("/CoinDeskAPI/{coinname}&{coincname}&{rate}")
 	public CoinDeskResultVO CoinDeskDataUpdate(@PathVariable String coinname, @PathVariable String coincname, @PathVariable String rate) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		coinDeskDataEntity.setCoinName(coinname);
@@ -81,7 +81,7 @@ public class CoinDeskWSController {
 		return coinDeskResultVO;
 	}
 	
-	@PostMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CoinDeskResultVO CoinDeskDataInsert(@RequestBody(required=false) CoinDeskDataEntity requestBody) {
 		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
 		if(null == requestBody || (
@@ -100,7 +100,7 @@ public class CoinDeskWSController {
 	}
 	
 	
-	@PutMapping("/CoinDeskAPI/Json")
+	@PostMapping("/CoinDeskAPI/Json")
 	public CoinDeskResultVO CoinDeskDataUpdate(@RequestBody(required=false) CoinDeskDataEntity requestBody) {
 		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
 		if(null == requestBody || (
