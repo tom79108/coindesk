@@ -1,7 +1,6 @@
 package idv.tom.coindesk.service;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.devtools.remote.client.HttpHeaderInterceptor;
@@ -16,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import idv.tom.coindesk.entity.CoinDeskDataEntity;
 import idv.tom.coindesk.utils.CommonDataUtil;
 import idv.tom.coindesk.vo.CoinData;
+import idv.tom.coindesk.vo.CoinDeskResultVO;
 import idv.tom.coindesk.vo.DataTimeType;
 import idv.tom.coindesk.vo.GetOldAPIRsVO;
 
@@ -43,7 +43,7 @@ public class CoinDeskService {
 	}
 	
 	
-	public List<CoinDeskDataEntity> TodoOldAPIToNewAPI() {
+	public CoinDeskResultVO TodoOldAPIToNewAPI() {
 		ObjectMapper mapper = new ObjectMapper();
 		GetOldAPIRsVO getOldAPIRsVO = new GetOldAPIRsVO();
 		try {
@@ -87,23 +87,23 @@ public class CoinDeskService {
 		}
 	}
 	
-	public CoinDeskDataEntity getCoinDeskDataSearch(String coinName) {
+	public CoinDeskResultVO getCoinDeskDataSearch(String coinName) {
 		return dbService.findByCoinName(coinName);
 	}
 	
-	public List<CoinDeskDataEntity> getCoinDeskDataSearchAll() {
+	public CoinDeskResultVO getCoinDeskDataSearchAll() {
 		return dbService.findAll();
 	}
 	
-	public CoinDeskDataEntity setCoinDeskDataInsert(CoinDeskDataEntity requestData) {
+	public CoinDeskResultVO setCoinDeskDataInsert(CoinDeskDataEntity requestData) {
 		return dbService.insert(requestData);
 	}
 	
-	public CoinDeskDataEntity setCoinDeskDataUpdate(CoinDeskDataEntity requestData) {
+	public CoinDeskResultVO setCoinDeskDataUpdate(CoinDeskDataEntity requestData) {
 		return dbService.update(requestData);
 	}
 	
-	public String setCoinDeskDataDelete(String key) {
+	public CoinDeskResultVO setCoinDeskDataDelete(String key) {
 		return dbService.deleteByKey(key);
 	}
 }

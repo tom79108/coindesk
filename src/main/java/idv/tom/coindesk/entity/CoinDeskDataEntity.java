@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.ToString;
 
 @Entity
@@ -14,6 +16,7 @@ import lombok.ToString;
 public class CoinDeskDataEntity implements Serializable{
 	@Id
 	@Column(name="coinname", columnDefinition = "varchar(10)")
+	
     String coinName;
 
     @Column(name="coincname", nullable=false, columnDefinition = "varchar(20)")

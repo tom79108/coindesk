@@ -10,6 +10,7 @@ import idv.tom.coindesk.entity.CoinDeskDataEntity;
 import idv.tom.coindesk.repositories.CoinDataBaseRepository;
 import idv.tom.coindesk.service.DBService;
 import idv.tom.coindesk.utils.CommonDataUtil;
+import idv.tom.coindesk.vo.CoinDeskResultVO;
 
 @Service
 public class DBServiceImpl implements DBService {
@@ -19,64 +20,93 @@ public class DBServiceImpl implements DBService {
 	@Autowired
 	private CoinDataBaseRepository coinDatabaseRepository;
 
-	public List<CoinDeskDataEntity> findAll() {
+	public CoinDeskResultVO findAll() {
+		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
+		try {
+			coinDeskResultVO.setFieldDataList(coinDatabaseRepository.findAll());
+		} catch (Exception e) {
+			coinDeskResultVO.setStatus("1");
+			e.printStackTrace();
+		}
+		return coinDeskResultVO;
+	}
+	
+	public CoinDeskResultVO findByCoinName(String coinName) {
+		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
+		try {
+			coinDeskResultVO.setFieldDataList(coinDatabaseRepository.findByCoinName(coinName)); 
+		} catch (Exception e) {
+			coinDeskResultVO.setStatus("1");
+			e.printStackTrace();
+		}
+		return coinDeskResultVO;
+	}
+
+	public CoinDeskResultVO insert(CoinDeskDataEntity insertData) {
+		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
+		CoinDeskResultVO tmpResultVO = new CoinDeskResultVO();
 		List<CoinDeskDataEntity> result = new ArrayList();
 		try {
-			result = coinDatabaseRepository.findAll();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public CoinDeskDataEntity findByCoinName(String coinName) {
-		CoinDeskDataEntity result = new CoinDeskDataEntity();
-		try {
-			result = coinDatabaseRepository.findByCoinName(coinName); 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public CoinDeskDataEntity insert(CoinDeskDataEntity insertData) {
-		insertData.setLastUpdateDate(
-			insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty() ?
-			CommonDataUtil.getTimestamp() : CommonDataUtil.getTimestamp(insertData.getLastUpdateDate()) 
-		);
-		CoinDeskDataEntity result = new CoinDeskDataEntity();
-		try {
-			result = coinDatabaseRepository.save(insertData);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	public CoinDeskDataEntity update(CoinDeskDataEntity updateData) {
-		updateData.setLastUpdateDate(getConnonDataUtil.getTimestamp());
-		CoinDeskDataEntity result = new CoinDeskDataEntity();
-		try {
-			result = coinDatabaseRepository.save(updateData);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	public String deleteByKey(String coinName) {
-		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
-		String result = "Data undefind";
-		try {
-			CoinDeskDataEntity selectData = findByCoinName(coinName);
-			if(selectData != null) {
-				coinDeskDataEntity.setCoinName(selectData.getCoinName());
-				coinDatabaseRepository.delete(coinDeskDataEntity);
-				result = "Delete Finish";
+			tmpResultVO = findByCoinName(insertData.getCoinName());
+			if(tmpResultVO.getFieldDataList().size() > 0) {
+				coinDeskResultVO.setStatus("3");
+				coinDeskResultVO.setResultMSG("Data was save");
+			} else {
+				insertData.setLastUpdateDate(
+						insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty() ?
+						CommonDataUtil.getTimestamp() : CommonDataUtil.getTimestamp(insertData.getLastUpdateDate()) 
+					);
+				result.add(coinDatabaseRepository.save(insertData));
+				coinDeskResultVO.setFieldDataList(result);
+				coinDeskResultVO.setResultMSG("Insert Finish");
 			}
 		} catch (Exception e) {
+			coinDeskResultVO.setStatus("1");
 			e.printStackTrace();
 		}
-		return result;
+		return coinDeskResultVO;
+	}
+
+	public CoinDeskResultVO update(CoinDeskDataEntity updateData) {
+		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
+		CoinDeskResultVO tmpResultVO = new CoinDeskResultVO();
+		List<CoinDeskDataEntity> result = new ArrayList();
+		try {
+			tmpResultVO = findByCoinName(updateData.getCoinName());
+			if(tmpResultVO.getFieldDataList().size() > 0) {
+				updateData.setLastUpdateDate(getConnonDataUtil.getTimestamp());
+				result.add(coinDatabaseRepository.save(updateData));
+				coinDeskResultVO.setFieldDataList(result);
+				coinDeskResultVO.setResultMSG("Update Finish");
+			} else {
+				coinDeskResultVO.setStatus("2");
+				coinDeskResultVO.setResultMSG("Data undefind");
+			}
+		} catch (Exception e) {
+			coinDeskResultVO.setStatus("1");
+			e.printStackTrace();
+		}
+		return coinDeskResultVO;
+	}
+	
+	public CoinDeskResultVO deleteByKey(String coinName) {
+		CoinDeskResultVO coinDeskResultVO = new CoinDeskResultVO();
+		CoinDeskResultVO tmpResultVO = new CoinDeskResultVO();
+		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
+		try {
+			tmpResultVO = findByCoinName(coinName);
+			if(tmpResultVO.getFieldDataList().size() > 0) {
+				coinDeskDataEntity.setCoinName(tmpResultVO.getFieldDataList().get(0).getCoinName());
+				coinDatabaseRepository.delete(coinDeskDataEntity);
+				coinDeskResultVO.setResultMSG("Delete Finish");
+			} else {
+				coinDeskResultVO.setStatus("2");
+				coinDeskResultVO.setResultMSG("Data undefind");
+			}
+		} catch (Exception e) {
+			coinDeskResultVO.setStatus("1");
+			e.printStackTrace();
+		}
+		return coinDeskResultVO;
 	}
 }
