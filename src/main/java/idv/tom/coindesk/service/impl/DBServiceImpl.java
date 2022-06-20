@@ -40,13 +40,10 @@ public class DBServiceImpl implements DBService {
 	}
 
 	public CoinDeskDataEntity insert(CoinDeskDataEntity insertData) {
-		System.out.println(insertData.getLastUpdateDate());
-		System.out.println(insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty());
 		insertData.setLastUpdateDate(
 			insertData.getLastUpdateDate() == null || insertData.getLastUpdateDate().isEmpty() ?
 			CommonDataUtil.getTimestamp() : CommonDataUtil.getTimestamp(insertData.getLastUpdateDate()) 
 		);
-		System.out.println(insertData.getLastUpdateDate());
 		CoinDeskDataEntity result = new CoinDeskDataEntity();
 		try {
 			result = coinDatabaseRepository.save(insertData);

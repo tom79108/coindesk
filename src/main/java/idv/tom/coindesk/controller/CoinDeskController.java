@@ -13,7 +13,6 @@ import idv.tom.coindesk.entity.CoinDeskDataEntity;
 import idv.tom.coindesk.service.CoinDeskService;
 import idv.tom.coindesk.service.impl.DBServiceImpl;
 
-
 @Controller
 public class CoinDeskController {
 	
@@ -30,7 +29,6 @@ public class CoinDeskController {
 	@GetMapping("/OldAPIData")
 	public Object OldCoinDeskData(Model model) {
 		model.addAttribute("APIResult", coinDeskService.getCoinDeskData());
-		System.out.println(model);
 		return "index";
 	}
 	
