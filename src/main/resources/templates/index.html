@@ -19,16 +19,20 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 				<form class="header" th:action="@{/OldAPIData}" th:method="get">
 					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">OldAPIData</button>
 			    </form>
+			    
 				<form class="header" th:action="@{/CoinDeskAPI}" th:method="get">
 					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">GetAPIData</button>
 			   	</form>
+			   	
 			   	<form class="header" th:action="@{/CoinDeskAPI}" th:method="post">
 					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">InsertGetOldAPIData</button>
 			   	</form>
+			   	
 			   	<form class="header" th:action="@{/CoinDeskAPI}" th:method="PUT">
 			   		<input type="hidden" name="_method" value="PUT"></input>
 					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">UpdateAPIData</button>
 			   	</form>
+			   	
 			   	<form th:action="@{/CoinDeskAPI}" th:method="delete">
 					<button type="submit" style="padding: 7px 20px; outline: none;  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2); margin: 10px;">DeleteAPIData</button>
 			   	</form>

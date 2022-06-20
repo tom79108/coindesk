@@ -1,21 +1,11 @@
-package idv.tom.vo;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+package idv.tom.coindesk.vo;
 
 public class DataTimeType {
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss")
-	@JsonProperty("updated")
 	private String updated;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss")
-	@JsonProperty("updatedISO")
 	private String updatedISO;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss")
-	@JsonProperty("updateduk")
 	private String updateduk;
-	
 	
 	public String getUpdated() {
 		return updated;

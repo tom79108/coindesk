@@ -1,8 +1,11 @@
 package idv.tom.coindesk.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.devtools.remote.client.HttpHeaderInterceptor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,27 +14,36 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import idv.tom.coindesk.entity.CoinDeskDataEntity;
-import idv.tom.vo.GetOldAPIRsVO;
+import idv.tom.coindesk.utils.CommonDataUtil;
+import idv.tom.coindesk.vo.CoinData;
+import idv.tom.coindesk.vo.DataTimeType;
+import idv.tom.coindesk.vo.GetOldAPIRsVO;
 
 @Service
 public class CoinDeskService {
-	
 	@Autowired
 	DBService dbService;
 	
 	public Object getCoinDeskData() {
 		final String url = "https://api.coindesk.com/v1/bpi/currentprice.json";
 		ObjectMapper mapper = new ObjectMapper();
-		Object jsonData = null;
+		GetOldAPIRsVO getOldAPIRsVO = new GetOldAPIRsVO();
+		JsonNode jsonNodeData = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			JsonNode jsonNodeData = mapper.readTree(restTemplate.getForObject(url, String.class));
-			jsonData = jsonNodeData;
-			JsonNodeDataMappingToDB(jsonNodeData);
+			restTemplate.setInterceptors(
+				Collections.singletonList(
+					new HttpHeaderInterceptor("Accept", MediaType.APPLICATION_JSON.toString())
+				)
+			);
+			jsonNodeData = mapper.readTree(restTemplate.getForObject(url, String.class));
+			String jsonString = CommonDataUtil.JavaObject2JsonString(jsonNodeData);
+			getOldAPIRsVO = mapper.readValue(jsonString, GetOldAPIRsVO.class);
+			JsonNodeDataMappingToDB(jsonNodeData, getOldAPIRsVO.getTime());
        	} catch (JsonProcessingException e) {
            e.printStackTrace();
        	}
-		return jsonData;
+		return jsonNodeData;
 	}
 	
 	enum CoinCname
@@ -46,17 +58,17 @@ public class CoinDeskService {
 	    	return cName;
 	    }
 	}
-	public void JsonNodeDataMappingToDB(JsonNode jsonNodeData) {
+	public void JsonNodeDataMappingToDB(JsonNode jsonNodeData, DataTimeType dataTimeType) {
 		ObjectMapper mapper = new ObjectMapper();
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		for(JsonNode coinData : jsonNodeData.findParents("code")) {
 			try {
 				String jsonString = mapper.writeValueAsString(coinData);
-				GetOldAPIRsVO getOldAPIRsVO = mapper.readValue(jsonString, GetOldAPIRsVO.class);
-				coinDeskDataEntity.setCoinName(getOldAPIRsVO.getCode());
-				coinDeskDataEntity.setCoinCName(CoinCname.valueOf(getOldAPIRsVO.getCode().toString()).getCoinCname());
-				coinDeskDataEntity.setRate(getOldAPIRsVO.getRate_float());
-				coinDeskDataEntity.setLastUpdateDate(jsonNodeData.get("time").get("updatedISO").toString());
+				CoinData coinDataVO = mapper.readValue(jsonString, CoinData.class);
+				coinDeskDataEntity.setCoinName(coinDataVO.getCode());
+				coinDeskDataEntity.setCoinCName(CoinCname.valueOf(coinDataVO.getCode()).getCoinCname());
+				coinDeskDataEntity.setRate(coinDataVO.getRate_float());
+				coinDeskDataEntity.setLastUpdateDate(dataTimeType.getUpdatedISO());
 				setCoinDeskDataInsert(coinDeskDataEntity);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();

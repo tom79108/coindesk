@@ -1,19 +1,33 @@
-package idv.tom.vo;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package idv.tom.coindesk.vo;
 
 public class CoinData {
-	@JsonProperty("code")
+	
 	private String code;
-	@JsonProperty("symbol")
+	
 	private String symbol;
-	@JsonProperty("rate")
+	
 	private String rate;
-	@JsonProperty("description")
+	
 	private String description;
-	@JsonProperty("rate_float")
+	
 	private String rate_float;
 	
+	
+	public CoinData() {
+		
+	}
+	
+	public CoinData(
+			String code, String symbol, String rate,
+			String description, String rate_float
+	    ) {
+	        super();
+	        this.code = code;
+	        this.symbol = symbol;
+	        this.rate = rate;
+	        this.description = description;
+	        this.rate_float = rate_float;
+	    }
 	
 	public String getCode() {
 		return code;

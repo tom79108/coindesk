@@ -3,6 +3,7 @@ package idv.tom.coindesk.ws.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ public class CoinDeskWSController {
 	@Autowired
 	CoinDeskService coinDeskService;
 	
-	@GetMapping("/OldAPIData/*")
+	@GetMapping({"/OldAPIData*",})
 	public Object OldCoinDeskData() {
 		return coinDeskService.getCoinDeskData();
 	}
@@ -59,12 +60,12 @@ public class CoinDeskWSController {
 		return coinDeskService.setCoinDeskDataDelete(coinname);
 	}
 	
-	@GetMapping("/Json/OldAPIData")
+	@GetMapping(value="/Json/OldAPIData", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object OldCoinDeskData(@RequestBody CoinDeskDataEntity requestBody) {
 		return coinDeskService.getCoinDeskData();
 	}
 	
-	@GetMapping("/CoinDeskAPI/Json")
+	@GetMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Object CoinDeskDataSelect(@RequestBody CoinDeskDataEntity requestBody) {
 		if(null == requestBody.getCoinName()) {
 			return coinDeskService.getCoinDeskDataSearchAll();
@@ -73,7 +74,7 @@ public class CoinDeskWSController {
 		}
 	}
 	
-	@PostMapping("/CoinDeskAPI/Json")
+	@PostMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CoinDeskDataEntity CoinDeskDataInsert(@RequestBody CoinDeskDataEntity requestBody) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		coinDeskDataEntity.setCoinName(requestBody.getCoinName());
@@ -82,7 +83,7 @@ public class CoinDeskWSController {
 		return coinDeskService.setCoinDeskDataInsert(coinDeskDataEntity);
 	}
 	
-	@PutMapping("/CoinDeskAPI/Json")
+	@PutMapping(value="/CoinDeskAPI/Json", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CoinDeskDataEntity CoinDeskDataUpdate(@RequestBody CoinDeskDataEntity requestBody) {
 		CoinDeskDataEntity coinDeskDataEntity = new CoinDeskDataEntity();
 		coinDeskDataEntity.setCoinName(requestBody.getCoinName());

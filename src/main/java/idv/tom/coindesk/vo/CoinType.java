@@ -1,16 +1,17 @@
-package idv.tom.vo;
-
-import java.util.List;
+package idv.tom.coindesk.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoinType {
 	@JsonProperty("USD")
 	private CoinData USD;
+	
 	@JsonProperty("GBP")
 	private CoinData GBP;
+	
 	@JsonProperty("EUR")
 	private CoinData EUR;
+	
 	public CoinData getUSD() {
 		return USD;
 	}
